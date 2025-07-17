@@ -56,7 +56,7 @@ const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-300"
                   />
-                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300"></div>
+                  <div className="absolute inset-0 bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300"></div>
                 </div>
 
                 {/* Project Content */}
