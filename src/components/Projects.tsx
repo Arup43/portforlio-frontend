@@ -34,7 +34,7 @@ const Projects: React.FC<ProjectsProps> = ({ projects }) => {
           </h2>
           <div className="w-24 h-1 bg-blue-600 mx-auto rounded-full"></div>
           <p className="text-lg text-gray-600 mt-6 max-w-2xl mx-auto">
-            Here are some of the projects I've worked on that showcase my skills and experience
+            Here are some of the projects I&apos;ve worked on that showcase my skills and experience
           </p>
         </motion.div>
 
@@ -45,11 +45,11 @@ const Projects: React.FC<ProjectsProps> = ({ projects }) => {
               initial={{ opacity: 0, y: 50 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="group"
+              className="group h-full"
             >
-              <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+              <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 h-full flex flex-col">
                 {/* Project Image */}
-                <div className="relative h-48 overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-50">
+                <div className="relative h-48 overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-50 flex-shrink-0">
                   <Image
                     src={project.img}
                     alt={project.name}
@@ -60,16 +60,16 @@ const Projects: React.FC<ProjectsProps> = ({ projects }) => {
                 </div>
 
                 {/* Project Content */}
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2 line-clamp-2">
+                <div className="p-6 flex flex-col flex-grow">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2 line-clamp-2 min-h-[3.5rem]">
                     {project.name}
                   </h3>
-                  <p className="text-gray-600 mb-4 line-clamp-3 text-sm leading-relaxed">
+                  <p className="text-gray-600 mb-4 line-clamp-3 text-sm leading-relaxed flex-grow min-h-[4.5rem]">
                     {project.description}
                   </p>
                   
                   {/* Project Link */}
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between mt-auto">
                     <a
                       href={project.link}
                       target="_blank"
