@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import React from 'react';
 import { AnimatePresence } from 'framer-motion';
-import Toast, { ToastProps } from './Toast';
+import Toast from './Toast';
 
 export interface ToastData {
   id: string;

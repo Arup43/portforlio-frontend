@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Upload, X, Loader2, Image as ImageIcon, AlertCircle } from 'lucide-react';
+import { Upload, X, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import { uploadToCloudinary } from '@/lib/cloudinary';
 
@@ -64,7 +64,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         onShowToast('error', result.error || 'Upload failed');
         setPreviewUrl(currentImage || null);
       }
-    } catch (error) {
+    } catch {
       onShowToast('error', 'Upload failed. Please try again.');
       setPreviewUrl(currentImage || null);
     } finally {

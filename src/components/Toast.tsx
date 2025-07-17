@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { CheckCircle, XCircle, AlertCircle, X } from 'lucide-react';
 
 export interface ToastProps {

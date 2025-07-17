@@ -46,7 +46,7 @@ const AdminAuthModal: React.FC<AdminAuthModalProps> = ({
       } else {
         setError(response.message || 'Authentication failed');
       }
-    } catch (error) {
+    } catch {
       setError('Network error. Please try again.');
     } finally {
       setLoading(false);

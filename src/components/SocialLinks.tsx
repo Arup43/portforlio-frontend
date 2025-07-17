@@ -34,7 +34,7 @@ const SocialLinks: React.FC<SocialLinksProps> = ({ socialLinks }) => {
           </h2>
           <div className="w-24 h-1 bg-blue-600 mx-auto rounded-full"></div>
           <p className="text-lg text-gray-600 mt-6 max-w-2xl mx-auto">
-            Let's stay connected! Follow me on these platforms for updates and insights
+            Let&apos;s stay connected! Follow me on these platforms for updates and insights
           </p>
         </motion.div>
 

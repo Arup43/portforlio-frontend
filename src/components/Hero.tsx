@@ -55,7 +55,7 @@ const Hero: React.FC<HeroProps> = ({ name, profilePic, expertiseRoles }) => {
               transition={{ delay: 0.2, duration: 0.6 }}
               className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6"
             >
-              Hi, I'm{' '}
+              Hi, I&apos;m{' '}
               <span className="text-blue-600">{name}</span>
             </motion.h1>
             
@@ -77,7 +77,7 @@ const Hero: React.FC<HeroProps> = ({ name, profilePic, expertiseRoles }) => {
               transition={{ delay: 0.6, duration: 0.6 }}
               className="text-lg text-gray-600 mb-8 max-w-2xl"
             >
-              Welcome to my portfolio. I'm passionate about creating innovative solutions 
+              Welcome to my portfolio. I&apos;m passionate about creating innovative solutions 
               and bringing ideas to life through technology.
             </motion.p>
             

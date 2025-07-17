@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Save, Loader2, Plus, Trash2, AlertCircle, CheckCircle } from 'lucide-react';
+import { X, Save, Loader2, Plus, Trash2, AlertCircle } from 'lucide-react';
 import { PortfolioData } from '@/types/portfolio';
 import { updatePortfolio, UpdatePortfolioRequest } from '@/lib/api';
 import { getAuthToken } from '@/lib/auth';
@@ -65,7 +65,7 @@ const EditPortfolioModal: React.FC<EditPortfolioModalProps> = ({
         setError(response.message || 'Failed to update portfolio');
         onShowToast('error', response.message || 'Failed to update portfolio');
       }
-    } catch (error) {
+    } catch {
       const errorMessage = 'Network error. Please try again.';
       setError(errorMessage);
       onShowToast('error', errorMessage);

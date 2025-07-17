@@ -1,5 +1,6 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
@@ -19,7 +20,7 @@ import EditPortfolioModal from '@/components/EditPortfolioModal';
 import ToastContainer from '@/components/ToastContainer';
 import { Loader2 } from 'lucide-react';
 
-export default function Home() {
+function PortfolioPage() {
   const [portfolioData, setPortfolioData] = useState<PortfolioData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -220,5 +221,25 @@ export default function Home() {
       {/* Toast Notifications */}
       <ToastContainer toasts={toasts} onRemoveToast={removeToast} />
     </div>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6 }}
+          className="text-center"
+        >
+          <Loader2 className="w-12 h-12 animate-spin text-blue-600 mx-auto mb-4" />
+          <p className="text-lg text-gray-600">Loading portfolio...</p>
+        </motion.div>
+      </div>
+    }>
+      <PortfolioPage />
+    </Suspense>
   );
 }

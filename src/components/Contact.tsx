@@ -56,7 +56,7 @@ const Contact: React.FC<ContactProps> = ({ contact }) => {
           </h2>
           <div className="w-24 h-1 bg-blue-600 mx-auto rounded-full"></div>
           <p className="text-lg text-gray-600 mt-6 max-w-2xl mx-auto">
-            Ready to start a conversation? I'd love to hear from you. Let's discuss how we can work together.
+            Ready to start a conversation? I&apos;d love to hear from you. Let&apos;s discuss how we can work together.
           </p>
         </motion.div>
 
@@ -100,7 +100,7 @@ const Contact: React.FC<ContactProps> = ({ contact }) => {
             Ready to Work Together?
           </h3>
           <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-            I'm always open to discussing new opportunities, creative projects, or just having a friendly chat about technology and innovation.
+            I&apos;m always open to discussing new opportunities, creative projects, or just having a friendly chat about technology and innovation.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
