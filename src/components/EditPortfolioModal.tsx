@@ -6,6 +6,7 @@ import { X, Save, Loader2, Plus, Trash2, AlertCircle, CheckCircle } from 'lucide
 import { PortfolioData } from '@/types/portfolio';
 import { updatePortfolio, UpdatePortfolioRequest } from '@/lib/api';
 import { getAuthToken } from '@/lib/auth';
+import ImageUpload from './ImageUpload';
 
 interface EditPortfolioModalProps {
   isOpen: boolean;
@@ -228,19 +229,14 @@ const EditPortfolioModal: React.FC<EditPortfolioModalProps> = ({
                       />
                     </div>
 
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Profile Picture URL
-                      </label>
-                      <input
-                        type="url"
-                        value={formData.profile_pic || ''}
-                        onChange={(e) => setFormData(prev => ({ ...prev, profile_pic: e.target.value }))}
-                        className={inputStyles}
-                        disabled={loading}
-                        placeholder="https://example.com/profile.jpg"
-                      />
-                    </div>
+                    {/* Profile Picture Upload */}
+                    <ImageUpload
+                      currentImage={formData.profile_pic}
+                      onImageUpload={(url) => setFormData(prev => ({ ...prev, profile_pic: url }))}
+                      onShowToast={onShowToast}
+                      label="Profile Picture"
+                      placeholder="Upload your profile picture"
+                    />
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -310,7 +306,7 @@ const EditPortfolioModal: React.FC<EditPortfolioModalProps> = ({
                     </div>
                     
                     {formData.expertise?.map((expertise, index) => (
-                      <div key={index} className="p-4 border border-gray-200 rounded-lg space-y-2 bg-gray-50">
+                      <div key={index} className="p-4 border border-gray-200 rounded-lg space-y-4 bg-gray-50">
                         <div className="flex items-center justify-between">
                           <span className="text-sm font-medium text-gray-700">Expertise {index + 1}</span>
                           <button
@@ -322,6 +318,7 @@ const EditPortfolioModal: React.FC<EditPortfolioModalProps> = ({
                             <Trash2 className="w-4 h-4" />
                           </button>
                         </div>
+                        
                         <input
                           type="text"
                           value={expertise.name}
@@ -330,13 +327,13 @@ const EditPortfolioModal: React.FC<EditPortfolioModalProps> = ({
                           placeholder="Expertise name"
                           disabled={loading}
                         />
-                        <input
-                          type="url"
-                          value={expertise.img}
-                          onChange={(e) => updateExpertise(index, 'img', e.target.value)}
-                          className={inputStyles}
-                          placeholder="Image URL"
-                          disabled={loading}
+                        
+                        <ImageUpload
+                          currentImage={expertise.img}
+                          onImageUpload={(url) => updateExpertise(index, 'img', url)}
+                          onShowToast={onShowToast}
+                          label="Expertise Image"
+                          placeholder="Upload expertise image"
                         />
                       </div>
                     ))}
@@ -358,7 +355,7 @@ const EditPortfolioModal: React.FC<EditPortfolioModalProps> = ({
                     </div>
                     
                     {formData.projects?.map((project, index) => (
-                      <div key={index} className="p-4 border border-gray-200 rounded-lg space-y-2 bg-gray-50">
+                      <div key={index} className="p-4 border border-gray-200 rounded-lg space-y-4 bg-gray-50">
                         <div className="flex items-center justify-between">
                           <span className="text-sm font-medium text-gray-700">Project {index + 1}</span>
                           <button
@@ -370,6 +367,7 @@ const EditPortfolioModal: React.FC<EditPortfolioModalProps> = ({
                             <Trash2 className="w-4 h-4" />
                           </button>
                         </div>
+                        
                         <input
                           type="text"
                           value={project.name}
@@ -378,14 +376,15 @@ const EditPortfolioModal: React.FC<EditPortfolioModalProps> = ({
                           placeholder="Project name"
                           disabled={loading}
                         />
-                        <input
-                          type="url"
-                          value={project.img}
-                          onChange={(e) => updateProject(index, 'img', e.target.value)}
-                          className={inputStyles}
-                          placeholder="Image URL"
-                          disabled={loading}
+                        
+                        <ImageUpload
+                          currentImage={project.img}
+                          onImageUpload={(url) => updateProject(index, 'img', url)}
+                          onShowToast={onShowToast}
+                          label="Project Image"
+                          placeholder="Upload project image"
                         />
+                        
                         <textarea
                           value={project.description}
                           onChange={(e) => updateProject(index, 'description', e.target.value)}
@@ -394,6 +393,7 @@ const EditPortfolioModal: React.FC<EditPortfolioModalProps> = ({
                           placeholder="Project description"
                           disabled={loading}
                         />
+                        
                         <input
                           type="url"
                           value={project.link}
@@ -422,7 +422,7 @@ const EditPortfolioModal: React.FC<EditPortfolioModalProps> = ({
                     </div>
                     
                     {formData.social_links?.map((social, index) => (
-                      <div key={index} className="p-4 border border-gray-200 rounded-lg space-y-2 bg-gray-50">
+                      <div key={index} className="p-4 border border-gray-200 rounded-lg space-y-4 bg-gray-50">
                         <div className="flex items-center justify-between">
                           <span className="text-sm font-medium text-gray-700">Social Link {index + 1}</span>
                           <button
@@ -434,6 +434,7 @@ const EditPortfolioModal: React.FC<EditPortfolioModalProps> = ({
                             <Trash2 className="w-4 h-4" />
                           </button>
                         </div>
+                        
                         <input
                           type="text"
                           value={social.name}
@@ -442,14 +443,15 @@ const EditPortfolioModal: React.FC<EditPortfolioModalProps> = ({
                           placeholder="Platform name"
                           disabled={loading}
                         />
-                        <input
-                          type="url"
-                          value={social.logo}
-                          onChange={(e) => updateSocialLink(index, 'logo', e.target.value)}
-                          className={inputStyles}
-                          placeholder="Logo URL"
-                          disabled={loading}
+                        
+                        <ImageUpload
+                          currentImage={social.logo}
+                          onImageUpload={(url) => updateSocialLink(index, 'logo', url)}
+                          onShowToast={onShowToast}
+                          label="Social Logo"
+                          placeholder="Upload platform logo"
                         />
+                        
                         <input
                           type="url"
                           value={social.link}
