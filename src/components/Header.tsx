@@ -1,10 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Edit } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const Header = () => {
+interface HeaderProps {
+  isAdminMode?: boolean;
+  onEditClick?: () => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ isAdminMode = false, onEditClick }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
@@ -42,7 +47,7 @@ const Header = () => {
           </motion.div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-8">
+          <nav className="hidden md:flex items-center space-x-8">
             {navItems.map((item, index) => (
               <motion.button
                 key={item.name}
@@ -55,6 +60,20 @@ const Header = () => {
                 {item.name}
               </motion.button>
             ))}
+            
+            {/* Admin Edit Button */}
+            {isAdminMode && (
+              <motion.button
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.8 }}
+                onClick={onEditClick}
+                className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium"
+              >
+                <Edit className="w-4 h-4" />
+                <span>Edit Portfolio</span>
+              </motion.button>
+            )}
           </nav>
 
           {/* Mobile Menu Button */}
@@ -89,6 +108,20 @@ const Header = () => {
                 {item.name}
               </motion.button>
             ))}
+            
+            {/* Mobile Admin Edit Button */}
+            {isAdminMode && (
+              <motion.button
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: navItems.length * 0.1 }}
+                onClick={onEditClick}
+                className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium mt-4"
+              >
+                <Edit className="w-4 h-4" />
+                <span>Edit Portfolio</span>
+              </motion.button>
+            )}
           </motion.nav>
         )}
       </div>

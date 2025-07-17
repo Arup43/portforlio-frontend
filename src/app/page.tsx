@@ -5,6 +5,8 @@ import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { PortfolioData } from '@/types/portfolio';
 import { fetchPortfolioById } from '@/lib/api';
+import { isAuthenticated as checkAuthenticated } from '@/lib/auth';
+import { useToast } from '@/hooks/useToast';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import About from '@/components/About';
@@ -12,20 +14,44 @@ import Expertise from '@/components/Expertise';
 import Projects from '@/components/Projects';
 import SocialLinks from '@/components/SocialLinks';
 import Contact from '@/components/Contact';
+import AdminAuthModal from '@/components/AdminAuthModal';
+import EditPortfolioModal from '@/components/EditPortfolioModal';
+import ToastContainer from '@/components/ToastContainer';
 import { Loader2 } from 'lucide-react';
 
 export default function Home() {
   const [portfolioData, setPortfolioData] = useState<PortfolioData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isAdminMode, setIsAdminMode] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const searchParams = useSearchParams();
+  const { toasts, removeToast, showSuccess, showError } = useToast();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const id = searchParams.get('id');
+        const admin = searchParams.get('admin');
+        
         if (!id) {
           throw new Error('Portfolio ID is required');
+        }
+
+        // Check if admin mode is requested
+        const adminMode = admin === 'true';
+        setIsAdminMode(adminMode);
+
+        // If admin mode, check if already authenticated
+        if (adminMode) {
+          const authenticated = checkAuthenticated();
+          setIsAuthenticated(authenticated);
+          
+          if (!authenticated) {
+            setShowAuthModal(true);
+          }
         }
 
         const response = await fetchPortfolioById(id);
@@ -43,6 +69,42 @@ export default function Home() {
 
     fetchData();
   }, [searchParams]);
+
+  const handleAuthSuccess = () => {
+    setIsAuthenticated(true);
+    setShowAuthModal(false);
+    showSuccess('Authentication successful!');
+  };
+
+  const handleEditClick = () => {
+    setShowEditModal(true);
+  };
+
+  const handleEditSuccess = async () => {
+    setShowEditModal(false);
+    
+    // Refresh portfolio data
+    try {
+      const id = searchParams.get('id');
+      if (id) {
+        const response = await fetchPortfolioById(id);
+        if (response.success) {
+          setPortfolioData(response.data);
+        }
+      }
+    } catch (error) {
+      console.error('Error refreshing portfolio data:', error);
+      showError('Failed to refresh portfolio data');
+    }
+  };
+
+  const handleToastShow = (type: 'success' | 'error', message: string) => {
+    if (type === 'success') {
+      showSuccess(message);
+    } else {
+      showError(message);
+    }
+  };
 
   if (loading) {
     return (
@@ -89,9 +151,27 @@ export default function Home() {
     return null;
   }
 
+  // If admin mode but not authenticated, show only auth modal
+  if (isAdminMode && !isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+        <AdminAuthModal
+          isOpen={showAuthModal}
+          onClose={() => setShowAuthModal(false)}
+          onSuccess={handleAuthSuccess}
+          portfolioId={portfolioData.id}
+        />
+        <ToastContainer toasts={toasts} onRemoveToast={removeToast} />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-white">
-      <Header />
+      <Header 
+        isAdminMode={isAdminMode && isAuthenticated}
+        onEditClick={handleEditClick}
+      />
       <Hero
         name={portfolioData.name}
         profilePic={portfolioData.profile_pic}
@@ -116,6 +196,29 @@ export default function Home() {
           </motion.p>
         </div>
       </footer>
+
+      {/* Admin Modals */}
+      {isAdminMode && (
+        <>
+          <AdminAuthModal
+            isOpen={showAuthModal}
+            onClose={() => setShowAuthModal(false)}
+            onSuccess={handleAuthSuccess}
+            portfolioId={portfolioData.id}
+          />
+          
+          <EditPortfolioModal
+            isOpen={showEditModal}
+            onClose={() => setShowEditModal(false)}
+            portfolioData={portfolioData}
+            onSuccess={handleEditSuccess}
+            onShowToast={handleToastShow}
+          />
+        </>
+      )}
+
+      {/* Toast Notifications */}
+      <ToastContainer toasts={toasts} onRemoveToast={removeToast} />
     </div>
   );
 }
